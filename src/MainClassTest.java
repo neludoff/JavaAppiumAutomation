@@ -18,5 +18,4 @@ public class MainClassTest extends MainClass{
     public void testGetClassString(){
         Assert.assertTrue("String contains rather 'Hello' or 'hello' words", this.getClassString().toLowerCase().contains("hello"));
     }
-
 }
