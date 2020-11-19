@@ -11,6 +11,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.net.URL;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class FirstTest {
 
@@ -38,7 +40,7 @@ public class FirstTest {
         driver.quit();
     }
 
- /*   @Test
+    @Test
     public void firstTest()
     {
         waitForElementAndClick(
@@ -147,7 +149,7 @@ public class FirstTest {
                 "Java (programming language)",
                 article_title
         );
-    }*/
+    }
 
     @Test
     public void testCheckSearchText(){
@@ -164,6 +166,51 @@ public class FirstTest {
         );
     }
 
+    @Test
+    public void testSearchCancel(){
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text,'SKIP')]"),
+                "Can't find skip button 'fragment_onboarding_skip_button'",
+                5
+        );
+
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_container"),
+                "Cannot find search element 'Input'",
+                5
+        );
+
+        waitForElementAndSendKeys(
+                By.id("search_src_text"),
+                "Cyberpunk",
+                "Can't find field 'Input'",
+                5
+        );
+
+        List<WebElement> elements = waitForElementsPresent(
+                By.xpath("//*[contains(@text,'Cyberpunk')]"),
+                "Cannot find any 'Cyberpunk' topic",
+                5
+        );
+
+        Assert.assertTrue(
+                "Can't find any searched topic",
+                elements.size() > 2
+        );
+    }
+
+    private List<WebElement> waitForElementsPresent(By by, String error_message, int tiomeoutinseconds){
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        WebDriverWait wait = new WebDriverWait(driver, tiomeoutinseconds);
+        wait.withMessage(error_message + "\n");
+        return wait.until(
+                ExpectedConditions.presenceOfAllElementsLocatedBy(by)
+        );
+    }
 
     private WebElement waitForElementPresent(By by, String error_message, int tiomeoutinseconds){
         WebDriverWait wait = new WebDriverWait(driver, tiomeoutinseconds);
@@ -212,4 +259,7 @@ public class FirstTest {
                 ExpectedConditions.attributeContains(by,"text",value)
         );
     }
+
+
+
 }
