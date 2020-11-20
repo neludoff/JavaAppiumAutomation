@@ -152,7 +152,7 @@ public class FirstTest {
     }
 
     @Test
-    public void testCheckSearchText(){
+    public void testCompareElementText(){
         waitForElementAndClick(
                 By.xpath("//*[contains(@text,'SKIP')]"),
                 "Can't find skip button 'fragment_onboarding_skip_button'",
@@ -162,7 +162,7 @@ public class FirstTest {
         assertElementHasText(
                 By.xpath("//*[contains(@text,'Search Wikipedia')]"),
                 "Search Wikipedia",
-                "We see unexpected placeholder"
+                "We see unexpected element text"
         );
     }
 
@@ -196,6 +196,21 @@ public class FirstTest {
         Assert.assertTrue(
                 "Can't find any searched topic",
                 elements.size() > 2
+        );
+
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_close_btn"),
+                "Can't find clear button",
+                5
+        );
+
+        Assert.assertTrue(
+                "Some searched articles presented on a page",
+                waitForElementNotPresent(
+                        By.xpath("//*[contains(@text,'Cyberpunk')]"),
+                        "Cannot find any 'Cyberpunk' topic",
+                        5
+                )
         );
     }
 
@@ -245,6 +260,14 @@ public class FirstTest {
                 ExpectedConditions.invisibilityOfElementLocated(by)
         );
     }
+
+    /*private boolean waitForElementsNotPresent(By by, String error_message, int timeoutInSeconds){
+        WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
+        wait.withMessage(error_message + "\n");
+        return wait.until(
+                ExpectedConditions.invisibilityOfAllElements(by)
+        );
+    }*/
 
     private WebElement waitForElementAndClear(By by, String error_message, int timeoutInSeconds){
         WebElement element = waitForElementPresent(by, error_message, timeoutInSeconds);
