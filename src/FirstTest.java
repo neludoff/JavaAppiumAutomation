@@ -14,6 +14,8 @@ import java.net.URL;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import static org.junit.Assert.assertTrue;
+
 public class FirstTest {
 
     private AppiumDriver driver;
@@ -193,7 +195,7 @@ public class FirstTest {
                 5
         );
 
-        Assert.assertTrue(
+        assertTrue(
                 "Can't find any searched topic",
                 elements.size() > 2
         );
@@ -204,7 +206,7 @@ public class FirstTest {
                 5
         );
 
-        Assert.assertTrue(
+        assertTrue(
                 "Some searched articles presented on a page",
                 waitForElementNotPresent(
                         By.xpath("//*[contains(@text,'Cyberpunk')]"),
@@ -212,6 +214,40 @@ public class FirstTest {
                         5
                 )
         );
+    }
+
+    @Test
+    public void testCheckWordsInSearchResult(){
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text,'SKIP')]"),
+                "Can't find skip button 'fragment_onboarding_skip_button'",
+                5
+        );
+
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_container"),
+                "Cannot find search element 'Input'",
+                5
+        );
+
+        waitForElementAndSendKeys(
+                By.id("search_src_text"),
+                "Java",
+                "Can't find field 'Input'",
+                5
+        );
+
+        List<WebElement> elements = waitForElementsPresent(
+                By.xpath("//*[contains(@text,'Java')]"),
+                "Cannot find any 'Java' topic",
+                5
+        );
+
+        for(WebElement object: elements){
+            assertTrue(
+                    "Can't find any topic which contains 'Java'",
+                    object.getAttribute("text").contains("Java"));
+        }
     }
 
     private List<WebElement> waitForElementsPresent(By by, String error_message, int tiomeoutinseconds){
@@ -260,14 +296,6 @@ public class FirstTest {
                 ExpectedConditions.invisibilityOfElementLocated(by)
         );
     }
-
-    /*private boolean waitForElementsNotPresent(By by, String error_message, int timeoutInSeconds){
-        WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
-        wait.withMessage(error_message + "\n");
-        return wait.until(
-                ExpectedConditions.invisibilityOfAllElements(by)
-        );
-    }*/
 
     private WebElement waitForElementAndClear(By by, String error_message, int timeoutInSeconds){
         WebElement element = waitForElementPresent(by, error_message, timeoutInSeconds);
