@@ -475,22 +475,27 @@ public class FirstTest {
                 15
         );
 
-        driver.rotate(ScreenOrientation.LANDSCAPE);
+        try {
+            driver.rotate(ScreenOrientation.LANDSCAPE);
 
-        String title_after_rotation = waitForElementAndGetAttribute(
-                By.id("org.wikipedia:id/view_page_title_text"),
-                "text",
-                "Can't find title of the article",
-                15
-        );
+            String title_after_rotation = waitForElementAndGetAttribute(
+                    By.id("org.wikipedia:id/view_page_title_text"),
+                    "text",
+                    "Can't find title of the article",
+                    15
+            );
 
-        Assert.assertEquals(
-                "Article title have been changed after screen rotation",
-                title_before_rotation,
-                title_after_rotation
-        );
+            Assert.assertEquals(
+                    "Article title have been changed after screen rotation",
+                    title_before_rotation,
+                    title_after_rotation
+            );
 
-        driver.rotate(ScreenOrientation.PORTRAIT);
+            driver.rotate(ScreenOrientation.PORTRAIT);
+        } catch (Exception e){
+            System.out.println("Handling exception. Return screen orientation to portrait mode");
+            driver.rotate(ScreenOrientation.PORTRAIT);
+        }
 
         String title_after_2nd_rotation = waitForElementAndGetAttribute(
                 By.id("org.wikipedia:id/view_page_title_text"),
@@ -732,9 +737,27 @@ public class FirstTest {
                 second_article_title_after_delete);
     }
 
+    @Test
+    public void testASimpleRotation()
+    {
+       int d, a;
+        try {
+            driver.rotate(ScreenOrientation.LANDSCAPE);
+            d = 0;
+            a = 3 / d;
+             System.out.println("This will not be printed");
+
+        }
+        catch (Exception e){
+            System.out.println("Exception handling");
+            driver.rotate(ScreenOrientation.PORTRAIT);
+        }
+    }
+
     // Ex6
     @Test
-    public void testAssertTitle(){
+    public void testAssertTitle()
+    {
         waitForElementAndClick(
                 By.id("org.wikipedia:id/search_container"),
                 "Cannot find search element 'Input'",
@@ -761,6 +784,8 @@ public class FirstTest {
                 "Article doesn't have title"
         );
     }
+
+
 
     private List<WebElement> waitForElementsPresent(By by, String error_message, int tiomeoutinseconds){
         try {
@@ -896,7 +921,9 @@ public class FirstTest {
     }
 
     private void assertElementPresent(By by, String error_message){
+
         WebElement element = driver.findElement(by);
+
         String element_title = element.getAttribute("text");
         assertTrue(
                 error_message,
