@@ -12,6 +12,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import sun.jvm.hotspot.jdi.ThreadReferenceImpl;
 
 import java.net.URL;
 import java.util.List;
@@ -539,6 +540,200 @@ public class FirstTest {
         );
     }
 
+    @Test
+    public void testSaveTwoArticlesToMyList(){
+
+        //
+        // Step 1. Save 2 articles into folder
+        //
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_container"),
+                "Cannot find search element 'Input'",
+                5
+        );
+
+        String search_line = "Kotlin";
+        String search_result_locator = "//*[@resource-id='org.wikipedia:id/search_results_list']//*[@resource-id='org.wikipedia:id/page_list_item_container']";
+
+        waitForElementAndSendKeys(
+                By.id("search_src_text"),
+                search_line,
+                "Can't find field 'Input'",
+                5
+        );
+
+        List<WebElement> listOfArticles = waitForElementsPresent(
+                By.xpath(search_result_locator),
+                "Can't find any topic by '" + search_line + "'.",
+                10
+        );
+
+        // Add 1st article to the reading list
+        listOfArticles.get(0).click();
+
+        String first_article_title = waitForElementPresent(
+                By.id("org.wikipedia:id/view_page_title_text"),
+                "Can't find article title",
+                15
+        ).getText();
+
+        waitForElementAndClick(
+                By.xpath("//*[@content-desc='More options']"),
+                "Cannot find element 'More options'",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[@text='Add to reading list']"),
+                "Cannot find element 'Add to reading list'",
+                5
+        );
+
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/onboarding_button"),
+                "Cannot find 'Got it' overlay",
+                5
+        );
+
+        waitForElementAndClear(
+                By.id("org.wikipedia:id/text_input"),
+                "Can't find input field to set articles folder",
+                5
+        );
+
+        String name_of_folder = "Learning programming";
+
+        waitForElementAndSendKeys(
+                By.id("org.wikipedia:id/text_input"),
+                name_of_folder,
+                "Can't put text into articles folder input",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[@text='OK']"),
+                "Can't press 'OK' button",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[@content-desc='Navigate up']"),
+                "Can't close article. Can't find 'X' link",
+                5
+        );
+
+        // Add 2nd article to reading list
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_container"),
+                "Cannot find search element 'Input'",
+                5
+        );
+
+        waitForElementAndSendKeys(
+                By.id("search_src_text"),
+                search_line,
+                "Can't find field 'Input'",
+                5
+        );
+
+        listOfArticles = waitForElementsPresent(
+                By.xpath(search_result_locator),
+                "Can't find any topic by '" + search_line + "'.",
+                10
+        );
+
+        listOfArticles.get(1).click();
+
+        String second_article_title = waitForElementPresent(
+                By.id("org.wikipedia:id/view_page_title_text"),
+                "Can't find article title",
+                15
+        ).getText();
+
+        waitForElementAndClick(
+                By.xpath("//*[@content-desc='More options']"),
+                "Cannot find element 'More options'",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[@text='Add to reading list']"),
+                "Cannot find element 'Add to reading list'",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[@text='" + name_of_folder + "']"),
+                "Cannot find '" + name_of_folder + "' reading list",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[@content-desc='Navigate up']"),
+                "Can't close article. Can't find 'X' link",
+                5
+        );
+
+        // Check that 2 articles are in the reading list
+        waitForElementAndClick(
+                By.xpath("//*[@content-desc='My lists']"),
+                "Can't find navigation button to My list",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[@text='" + name_of_folder + "']"),
+                "Can't find created folder",
+                5
+        );
+
+        listOfArticles = waitForElementsPresent(
+                By.id("org.wikipedia:id/page_list_item_title"),
+                "Can't find any topic by '" + search_line + "'.",
+                10
+        );
+
+        assertTrue("There are less than 2 articles in the reading list '" + name_of_folder + "'", listOfArticles.size()>=2);
+
+        // Delete 1st article
+        swipeElementToLeft(
+                By.xpath("//*[@text='" + first_article_title + "']"),
+                "Can't find 1st saved article"
+        );
+
+        waitForElementNotPresent(
+                By.xpath("//*[@text='" + first_article_title + "']"),
+                "1st saved article still presented in the reading list '" + name_of_folder + "'.",
+                5
+        );
+
+        //
+        // Step 3. Check that 2nd article is in the list
+        //
+        waitForElementPresent(
+                By.xpath("//*[@text='" + second_article_title + "']"),
+                "2nd saved article is not presented in the reading list '" + name_of_folder + "'.",
+                5
+        );
+
+        //
+        // Step 4. Check that title for 2nd article didn't changed
+        //
+
+        String second_article_title_after_delete =
+                waitForElementPresent(
+                    By.xpath("//*[@text='" + second_article_title + "']"),
+                    "2nd saved article is not presented in the reading list '" + name_of_folder + "'.",
+                    5
+                ).getAttribute("text");
+
+        Assert.assertEquals(
+                "Title for 2nd article has been changed",
+                second_article_title,
+                second_article_title_after_delete);
+    }
+
+
     private List<WebElement> waitForElementsPresent(By by, String error_message, int tiomeoutinseconds){
         try {
             Thread.sleep(5000);
@@ -666,9 +861,31 @@ public class FirstTest {
         }
     }
 
-    private  String waitForElementAndGetAttribute(By by, String attribute, String error_message, int timeoutInSeconds)
+    private String waitForElementAndGetAttribute(By by, String attribute, String error_message, int timeoutInSeconds)
     {
         WebElement element = waitForElementPresent(by, error_message, timeoutInSeconds);
         return element.getAttribute(attribute);
     }
+
+/*    private List getArticlesTitles(By by, String error_message)
+    {
+        List<WebElement> elements = waitForElementsPresent(
+                by,
+                "Cannot find any article by '" + by.toString() + "'.",
+                5
+        );
+
+        assertTrue(
+                "Can't find 2 search results by '" + search_line +"'.",
+                elements.size() >= 2
+        );
+
+        List<String> article_titles = new arrayList<String>();
+
+        for (i=0;i<2;i++){
+            article_titles.add(elements(i).getAttribute("text"));
+        }
+        return article_titles;
+    }*/
+
 }
