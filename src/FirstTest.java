@@ -12,8 +12,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import sun.jvm.hotspot.jdi.ThreadReferenceImpl;
-
 import java.net.URL;
 import java.util.List;
 
@@ -571,11 +569,12 @@ public class FirstTest {
         // Add 1st article to the reading list
         listOfArticles.get(0).click();
 
-        String first_article_title = waitForElementPresent(
+        String first_article_title = waitForElementAndGetAttribute(
                 By.id("org.wikipedia:id/view_page_title_text"),
-                "Can't find article title",
-                15
-        ).getText();
+                "text",
+                "Can't find first article title",
+                5
+        );
 
         waitForElementAndClick(
                 By.xpath("//*[@content-desc='More options']"),
@@ -644,11 +643,12 @@ public class FirstTest {
 
         listOfArticles.get(1).click();
 
-        String second_article_title = waitForElementPresent(
+        String second_article_title = waitForElementAndGetAttribute(
                 By.id("org.wikipedia:id/view_page_title_text"),
+                "text",
                 "Can't find article title",
-                15
-        ).getText();
+                5
+        );
 
         waitForElementAndClick(
                 By.xpath("//*[@content-desc='More options']"),
@@ -665,7 +665,7 @@ public class FirstTest {
         waitForElementAndClick(
                 By.xpath("//*[@text='" + name_of_folder + "']"),
                 "Cannot find '" + name_of_folder + "' reading list",
-                5
+                10
         );
 
         waitForElementAndClick(
@@ -684,7 +684,7 @@ public class FirstTest {
         waitForElementAndClick(
                 By.xpath("//*[@text='" + name_of_folder + "']"),
                 "Can't find created folder",
-                5
+                10
         );
 
         listOfArticles = waitForElementsPresent(
@@ -719,20 +719,18 @@ public class FirstTest {
         //
         // Step 4. Check that title for 2nd article didn't changed
         //
-
-        String second_article_title_after_delete =
-                waitForElementPresent(
-                    By.xpath("//*[@text='" + second_article_title + "']"),
-                    "2nd saved article is not presented in the reading list '" + name_of_folder + "'.",
-                    5
-                ).getAttribute("text");
+        String second_article_title_after_delete = waitForElementAndGetAttribute(
+                By.xpath("//*[@text='" + second_article_title + "']"),
+                "text",
+                "2nd saved article is not presented in the reading list '" + name_of_folder + "'.",
+                5
+        );
 
         Assert.assertEquals(
                 "Title for 2nd article has been changed",
                 second_article_title,
                 second_article_title_after_delete);
     }
-
 
     private List<WebElement> waitForElementsPresent(By by, String error_message, int tiomeoutinseconds){
         try {
@@ -866,26 +864,4 @@ public class FirstTest {
         WebElement element = waitForElementPresent(by, error_message, timeoutInSeconds);
         return element.getAttribute(attribute);
     }
-
-/*    private List getArticlesTitles(By by, String error_message)
-    {
-        List<WebElement> elements = waitForElementsPresent(
-                by,
-                "Cannot find any article by '" + by.toString() + "'.",
-                5
-        );
-
-        assertTrue(
-                "Can't find 2 search results by '" + search_line +"'.",
-                elements.size() >= 2
-        );
-
-        List<String> article_titles = new arrayList<String>();
-
-        for (i=0;i<2;i++){
-            article_titles.add(elements(i).getAttribute("text"));
-        }
-        return article_titles;
-    }*/
-
 }
