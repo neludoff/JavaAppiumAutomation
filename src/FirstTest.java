@@ -732,6 +732,36 @@ public class FirstTest {
                 second_article_title_after_delete);
     }
 
+    // Ex6
+    @Test
+    public void testAssertTitle(){
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_container"),
+                "Cannot find search element 'Input'",
+                5
+        );
+
+        String search_line = "chief technology officer";
+
+        waitForElementAndSendKeys(
+                By.id("search_src_text"),
+                search_line,
+                "Can't find field 'Input'",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text,'technological issues')]"),
+                "Cannot find 'Chief technology officer' topic searching by " + search_line,
+                5
+        );
+
+        assertElementPresent(
+                By.id("org.wikipedia:id/view_page_title_text"),
+                "Article doesn't have title"
+        );
+    }
+
     private List<WebElement> waitForElementsPresent(By by, String error_message, int tiomeoutinseconds){
         try {
             Thread.sleep(5000);
@@ -863,5 +893,13 @@ public class FirstTest {
     {
         WebElement element = waitForElementPresent(by, error_message, timeoutInSeconds);
         return element.getAttribute(attribute);
+    }
+
+    private void assertElementPresent(By by, String error_message){
+        WebElement element = driver.findElement(by);
+        String element_title = element.getAttribute("text");
+        assertTrue(
+                error_message,
+                element_title != null);
     }
 }
