@@ -1,5 +1,6 @@
 import Lib.CoreTestCase;
 import Lib.ui.MainPageObject;
+import Lib.ui.SearchPageObject;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -21,58 +22,20 @@ public class FirstTest extends CoreTestCase {
     @Test
     public void testSearch()
     {
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//*[contains(@text,'Search Wikipedia')]"),
-                "Cannot find search element",
-                5
-        );
-
-        MainPageObject.waitForElementAndSendKeys(
-                By.id("search_src_text"),
-                "Java",
-                "Can't find field 'Input'",
-                5
-        );
-
-        MainPageObject.waitForElementPresent(
-                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_title']//*[@text='Object-oriented programming language']"),
-                "Cannot find 'Object-oriented programming language' topic searching by 'Java'",
-                5
-        );
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject.initSearchInput();
+        SearchPageObject.typeSearchLine("Java");
+        SearchPageObject.waitForSearchResult("Object-oriented programming language");
     }
 
     @Test
-    public void testCancelSearch(){
-        MainPageObject.waitForElementAndClick(
-                By.id("org.wikipedia:id/search_container"),
-                "Cannot find search element 'Input'",
-                5
-        );
-
-        MainPageObject.waitForElementAndSendKeys(
-                By.id("search_src_text"),
-                "Java",
-                "Can't find field 'Input'",
-                5
-        );
-
-        MainPageObject.waitForElementAndClear(
-                By.id("search_src_text"),
-                "Can't find field 'Input' for clear it",
-                5
-        );
-
-        MainPageObject.waitForElementAndClick(
-                By.xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout[1]/android.view.ViewGroup/android.widget.ImageButton"),
-                "Cannot find return element",
-                5
-        );
-
-        MainPageObject.waitForElementNotPresent(
-                By.xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout[1]/android.view.ViewGroup/android.widget.ImageButton"),
-                "Return element is still present on the page",
-                5
-        );
+    public void testCancelSearch()
+    {
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject.initSearchInput();
+        SearchPageObject.waitForCancelButtonToAppear();
+        SearchPageObject.clickCancelSearch();
+        SearchPageObject.waitForCancelButtonToDissappear();
     }
 
     @Test
