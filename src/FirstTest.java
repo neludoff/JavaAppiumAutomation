@@ -1,4 +1,5 @@
 import Lib.CoreTestCase;
+import Lib.ui.ArticlePageObject;
 import Lib.ui.MainPageObject;
 import Lib.ui.SearchPageObject;
 import org.junit.Assert;
@@ -40,32 +41,13 @@ public class FirstTest extends CoreTestCase {
 
     @Test
     public void testCompareArticleTitle(){
-        MainPageObject.waitForElementAndClick(
-                By.id("org.wikipedia:id/search_container"),
-                "Cannot find search element 'Input'",
-                5
-        );
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject.initSearchInput();
+        SearchPageObject.typeSearchLine("Java");
+        SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
 
-        MainPageObject.waitForElementAndSendKeys(
-                By.id("search_src_text"),
-                "Java",
-                "Can't find field 'Input'",
-                5
-        );
-
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//*[contains(@text,'Object-oriented programming language')]"),
-                "Cannot find search element 'Input'",
-                5
-        );
-
-        WebElement title_element = MainPageObject.waitForElementPresent(
-            By.id("org.wikipedia:id/view_page_title_text"),
-                    "Can't find article title",
-                    15
-        );
-
-        String article_title = title_element.getAttribute("text");
+        ArticlePageObject ArticlePageObject = new ArticlePageObject(driver);
+        String article_title = ArticlePageObject.getArticleTitile();
 
         Assert.assertEquals(
                 "We see unexpected title",
@@ -155,36 +137,14 @@ public class FirstTest extends CoreTestCase {
 
     @Test
     public void testSwipeArticle(){
-        MainPageObject.waitForElementAndClick(
-                By.id("org.wikipedia:id/search_container"),
-                "Cannot find search element 'Input'",
-                5
-        );
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject.initSearchInput();
+        SearchPageObject.typeSearchLine("Appium");
+        SearchPageObject.clickByArticleWithSubstring("Appium");
 
-        MainPageObject.waitForElementAndSendKeys(
-                By.id("search_src_text"),
-                "Appium",
-                "Can't find field 'Input'",
-                5
-        );
-
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_title'][@text='Appium']"),
-                "Cannot find search element 'Input'",
-                5
-        );
-
-        MainPageObject.waitForElementPresent(
-                By.id("org.wikipedia:id/view_page_title_text"),
-                "Can't find article header",
-                15
-        );
-
-        MainPageObject.swipeUpToFindElement(
-                By.xpath("//*[@text='View page in browser']"),
-                "Can't find the end of the article",
-                20
-        );
+        ArticlePageObject ArticlePageObject = new ArticlePageObject(driver);
+        ArticlePageObject.waitForTitleElement();
+        ArticlePageObject.swipeToFooter();
     }
 
     @Test
