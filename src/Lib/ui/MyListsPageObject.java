@@ -7,7 +7,8 @@ public class MyListsPageObject extends MainPageObject{
 
     public static final String
             FOLDER_BY_NAME_TPL = "//*[@text='{FOLDER_NAME}']",
-            ARTICLE_BY_TITLE_TPL = "//*[@text='{TITLE}']";
+            ARTICLE_BY_TITLE_TPL = "//*[@text='{TITLE}']",
+            MY_LIST_ELEMENT = "//*[@content-desc='My lists']";
 
     private static String getFolderXpathByName(String name_of_folder)
     {
@@ -63,5 +64,10 @@ public class MyListsPageObject extends MainPageObject{
                 "Can't find saved article"
         );
         this.waitForArticleToDisappearByTitle(article_title);
+    }
+
+    public void openMyLists()
+    {
+        this.waitForElementAndClick(By.xpath(MY_LIST_ELEMENT), "Can't find 'My List' button",5);
     }
 }

@@ -4,7 +4,6 @@ import Lib.CoreTestCase;
 import Lib.ui.ArticlePageObject;
 import Lib.ui.SearchPageObject;
 import org.junit.Test;
-import org.openqa.selenium.ScreenOrientation;
 
 public class ChangeAppConditionTests extends CoreTestCase {
 

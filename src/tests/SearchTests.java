@@ -48,45 +48,29 @@ public class SearchTests extends CoreTestCase {
         );
     }
 
+    // Ex3
     @Test
-    public void testSearchCancel(){
-        MainPageObject.waitForElementAndClick(
-                By.id("org.wikipedia:id/search_container"),
-                "Cannot find search element 'Input'",
-                5
-        );
+    public void testFindSeveralArticlesAndCancelSearch(){
 
-        MainPageObject.waitForElementAndSendKeys(
-                By.id("search_src_text"),
-                "Cyberpunk",
-                "Can't find field 'Input'",
-                5
-        );
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject.initSearchInput();
+        SearchPageObject.typeSearchLine("Cyberpunk");
 
-        List<WebElement> elements = MainPageObject.waitForElementsPresent(
-                By.xpath("//*[contains(@text,'Cyberpunk')]"),
-                "Cannot find any 'Cyberpunk' topic",
-                5
-        );
+        int articles_amount_before_search_cancel = SearchPageObject.getAmountOfFoundArticles();
 
         assertTrue(
                 "Can't find any searched topic",
-                elements.size() > 2
+                articles_amount_before_search_cancel > 2
         );
 
-        MainPageObject.waitForElementAndClick(
-                By.id("org.wikipedia:id/search_close_btn"),
-                "Can't find clear button",
-                5
-        );
+        SearchPageObject.waitForCancelButtonToAppear();
+        SearchPageObject.clickCancelSearch();
+
+        int articles_amount_after_search_cancel = SearchPageObject.getAmountOfFoundArticles();
 
         assertTrue(
                 "Some searched articles presented on a page",
-                MainPageObject.waitForElementNotPresent(
-                        By.xpath("//*[contains(@text,'Cyberpunk')]"),
-                        "Cannot find any 'Cyberpunk' topic",
-                        5
-                )
+                articles_amount_after_search_cancel == 0
         );
     }
 

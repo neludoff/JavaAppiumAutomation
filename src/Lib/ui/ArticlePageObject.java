@@ -68,7 +68,6 @@ public class ArticlePageObject extends MainPageObject
                 5
         );
 
-
         this.waitForElementAndSendKeys(
                 By.id(MY_LIST_MAIN_INPUT),
                 name_of_folder,

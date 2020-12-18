@@ -2,6 +2,9 @@ package Lib.ui;
 
 import io.appium.java_client.AppiumDriver;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+
+import java.util.List;
 
 public class SearchPageObject extends MainPageObject
 {
@@ -38,7 +41,7 @@ public class SearchPageObject extends MainPageObject
 
     public void waitForCancelButtonToDissappear()
     {
-        this.waitForElementNotPresent(By.id(SEARCH_CANCEL_BUTTON), "Search cancel button is stell present",5);
+        this.waitForElementNotPresent(By.id(SEARCH_CANCEL_BUTTON), "Search cancel button is still present",5);
     }
 
     public void clickCancelSearch()
@@ -63,14 +66,23 @@ public class SearchPageObject extends MainPageObject
         this.waitForElementAndClick(By.xpath(search_result_xpath), "Can't find and click search result with substring '" + substring + "'.",5);
     }
 
+    public void clickByArticleWithTitle(String article_title)
+    {
+        this.waitForElementAndClick(By.xpath("//*[@text='" + article_title + "']"), "Can't find article by title '" + article_title + "'", 5);
+    }
+
     public int getAmountOfFoundArticles()
     {
-         this.waitForElementPresent(
-                By.xpath(SEARCH_RESULT_ELEMENT),
-                "Can't find anything by request ",
-                15
-        );
-         return this.getAmountOfElements(By.xpath(SEARCH_RESULT_ELEMENT));
+        try {
+            this.waitForElementPresent(
+                    By.xpath(SEARCH_RESULT_ELEMENT),
+                    "Can't find anything by request ",
+                    15
+            );
+            return this.getAmountOfElements(By.xpath(SEARCH_RESULT_ELEMENT));
+        } catch(Exception e){
+            return 0;
+        }
     }
 
     public void waitForEmptyResultsLabel()
@@ -81,5 +93,10 @@ public class SearchPageObject extends MainPageObject
     public void assertThereIsNoResultOfSearch()
     {
         this.asserElementNotPresent(By.xpath(SEARCH_RESULT_ELEMENT), "We supposed not to find any results");
+    }
+
+    public List<WebElement> getArticles()
+    {
+        return waitForElementsPresent(By.xpath(SEARCH_RESULT_ELEMENT), "Can't find any article",5);
     }
 }

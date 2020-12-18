@@ -10,8 +10,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
 
-import static org.junit.Assert.assertTrue;
-
 public class MainPageObject
 {
     protected AppiumDriver driver;
@@ -152,15 +150,5 @@ public class MainPageObject
     {
         WebElement element = waitForElementPresent(by, error_message, timeoutInSeconds);
         return element.getAttribute(attribute);
-    }
-
-    public void assertElementPresent(By by, String error_message){
-
-        WebElement element = driver.findElement(by);
-
-        String element_title = element.getAttribute("text");
-        assertTrue(
-                error_message,
-                element_title != null);
     }
 }
