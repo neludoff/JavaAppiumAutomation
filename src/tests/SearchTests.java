@@ -23,8 +23,7 @@ public class SearchTests extends CoreTestCase {
     @Test
     public void testSearch()
     {
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
-        SearchPageObject.initSearchInput();
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine("Java");
         SearchPageObject.waitForSearchResult("Object-oriented programming language");
     }
@@ -42,7 +41,7 @@ public class SearchTests extends CoreTestCase {
     @Test
     public void testCompareElementText(){
         MainPageObject.assertElementHasText(
-                By.xpath("//*[contains(@text,'Search Wikipedia')]"),
+                "xpath://*[contains(@text,'Search Wikipedia')]",
                 "Search Wikipedia",
                 "We see unexpected element text"
         );
@@ -77,20 +76,20 @@ public class SearchTests extends CoreTestCase {
     @Test
     public void testCheckWordsInSearchResult(){
         MainPageObject.waitForElementAndClick(
-                By.id("org.wikipedia:id/search_container"),
+                "id:org.wikipedia:id/search_container",
                 "Cannot find search element 'Input'",
                 5
         );
 
         MainPageObject.waitForElementAndSendKeys(
-                By.id("search_src_text"),
+                "id:search_src_text",
                 "Java",
                 "Can't find field 'Input'",
                 5
         );
 
         List<WebElement> elements = MainPageObject.waitForElementsPresent(
-                By.xpath("//*[contains(@text,'Java')]"),
+                "xpath://*[contains(@text,'Java')]",
                 "Cannot find any 'Java' topic",
                 5
         );

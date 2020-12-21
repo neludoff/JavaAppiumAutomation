@@ -8,16 +8,6 @@ import org.openqa.selenium.WebElement;
 import java.util.List;
 
 public class MyListTests extends CoreTestCase {
-
-    // Get rid of MainPageObject from this class
-    private Lib.ui.MainPageObject MainPageObject;
-
-    protected void setUp() throws Exception{
-        super.setUp();
-
-        MainPageObject = new MainPageObject(driver);
-    };
-
     @Test
     public void testSaveFirstArticleToMyList(){
         SearchPageObject SearchPageObject = new SearchPageObject(driver);
