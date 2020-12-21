@@ -4,7 +4,6 @@ import Lib.CoreTestCase;
 import Lib.ui.MainPageObject;
 import Lib.ui.SearchPageObject;
 import org.junit.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import java.util.List;

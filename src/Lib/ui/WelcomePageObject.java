@@ -1,7 +1,6 @@
 package Lib.ui;
 
 import io.appium.java_client.AppiumDriver;
-import org.openqa.selenium.By;
 
 public class WelcomePageObject extends MainPageObject
 {
