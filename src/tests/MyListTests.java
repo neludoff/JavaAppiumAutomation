@@ -2,6 +2,7 @@ package tests;
 
 import Lib.CoreTestCase;
 import Lib.ui.*;
+import Lib.ui.facrories.SearchPageObjectFactory;
 import org.junit.Test;
 import org.openqa.selenium.WebElement;
 
@@ -10,7 +11,7 @@ import java.util.List;
 public class MyListTests extends CoreTestCase {
     @Test
     public void testSaveFirstArticleToMyList(){
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine("Java");
         SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
@@ -39,7 +40,7 @@ public class MyListTests extends CoreTestCase {
         //
         // Step 1. Save 2 articles into folder
         //
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine("Kotlin");
 

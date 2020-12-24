@@ -3,6 +3,7 @@ package tests;
 import Lib.CoreTestCase;
 import Lib.ui.MainPageObject;
 import Lib.ui.SearchPageObject;
+import Lib.ui.facrories.SearchPageObjectFactory;
 import org.junit.Test;
 import org.openqa.selenium.WebElement;
 
@@ -22,7 +23,8 @@ public class SearchTests extends CoreTestCase {
     @Test
     public void testSearch()
     {
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);SearchPageObject.initSearchInput();
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
+        SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine("Java");
         SearchPageObject.waitForSearchResult("Object-oriented programming language");
     }
@@ -30,7 +32,7 @@ public class SearchTests extends CoreTestCase {
     @Test
     public void testCancelSearch()
     {
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
         SearchPageObject.initSearchInput();
         SearchPageObject.waitForCancelButtonToAppear();
         SearchPageObject.clickCancelSearch();
@@ -50,7 +52,7 @@ public class SearchTests extends CoreTestCase {
     @Test
     public void testFindSeveralArticlesAndCancelSearch(){
 
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine("Cyberpunk");
 
@@ -103,7 +105,7 @@ public class SearchTests extends CoreTestCase {
     @Test
     public void testAmountOfNotEmptySearch()
     {
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
         SearchPageObject.initSearchInput();
         String search_line = "Linkin park discography";
         SearchPageObject.typeSearchLine(search_line);
@@ -117,7 +119,7 @@ public class SearchTests extends CoreTestCase {
 
     @Test
     public void testAmountOfEmptySearch(){
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
         SearchPageObject.initSearchInput();
         String search_line = "qweqddwqw11";
         SearchPageObject.typeSearchLine(search_line);
