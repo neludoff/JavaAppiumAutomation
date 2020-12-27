@@ -1,14 +1,21 @@
 package tests;
 
 import Lib.CoreTestCase;
+import Lib.Platform;
 import Lib.ui.*;
-import Lib.ui.facrories.SearchPageObjectFactory;
+import Lib.ui.factories.ArticlePageObjectFactory;
+import Lib.ui.factories.MyListsPageObjectFactory;
+import Lib.ui.factories.NavigationUIFactory;
+import Lib.ui.factories.SearchPageObjectFactory;
 import org.junit.Test;
 import org.openqa.selenium.WebElement;
 
 import java.util.List;
 
 public class MyListTests extends CoreTestCase {
+
+    private static final String name_of_folder = "Learning programming";
+
     @Test
     public void testSaveFirstArticleToMyList(){
         SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
@@ -16,19 +23,30 @@ public class MyListTests extends CoreTestCase {
         SearchPageObject.typeSearchLine("Java");
         SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
 
-        ArticlePageObject ArticlePageObject = new ArticlePageObject(driver);
+        ArticlePageObject ArticlePageObject = ArticlePageObjectFactory.get(driver);
         ArticlePageObject.waitForTitleElement();
         String article_title = ArticlePageObject.getArticleTitile();
-        String name_of_folder = "Learning programming";
-        ArticlePageObject.addArticleToMyList(name_of_folder);
-        ArticlePageObject.closeArticle();
 
-        NavigationUI NavigationUI = new NavigationUI(driver);
+        if(Platform.getInstance().isAndroid()){
+            ArticlePageObject.addArticleToMyList(name_of_folder);
+        } else {
+            ArticlePageObject.addArticleToMySaved();
+        }
+        ArticlePageObject.closeArticle();
+        SearchPageObject.clickCancelSearch();
+
+        NavigationUI NavigationUI = NavigationUIFactory.get(driver);
         NavigationUI.clickMyLists();
 
-        MyListsPageObject MyListPageObject = new MyListsPageObject(driver);
+        MyListsPageObject MyListPageObject = MyListsPageObjectFactory.get(driver);
 
-        MyListPageObject.openFolderByName(name_of_folder);
+        if(Platform.getInstance().isiOS()){
+            MyListPageObject.closeSyncSavedArticlesPopUp();
+        }
+
+        if(Platform.getInstance().isAndroid()){
+            MyListPageObject.openFolderByName(name_of_folder);
+        }
 
         MyListPageObject.swipeByArticleToDelete(article_title);
     }
@@ -49,7 +67,7 @@ public class MyListTests extends CoreTestCase {
         // Add 1st article to the reading list
         String name_of_folder = "Kotlin lists";
         listOfArticles.get(0).click();
-        ArticlePageObject ArticlePageObject = new ArticlePageObject(driver);
+        ArticlePageObject ArticlePageObject = ArticlePageObjectFactory.get(driver);
         ArticlePageObject.waitForTitleElement();
         String first_article_title = ArticlePageObject.getArticleTitile();
         ArticlePageObject.addArticleToMyList(name_of_folder);
@@ -67,7 +85,7 @@ public class MyListTests extends CoreTestCase {
         ArticlePageObject.closeArticle();
 
         // Check that 2 articles are in the reading list
-        MyListsPageObject MyListsPageObject = new MyListsPageObject(driver);
+        MyListsPageObject MyListsPageObject = MyListsPageObjectFactory.get(driver);
         MyListsPageObject.openMyLists();
         MyListsPageObject.openFolderByName(name_of_folder);
 

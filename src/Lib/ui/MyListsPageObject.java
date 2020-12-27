@@ -1,13 +1,15 @@
 package Lib.ui;
 
 import io.appium.java_client.AppiumDriver;
+import Lib.Platform;
 
-public class MyListsPageObject extends MainPageObject{
+abstract public class MyListsPageObject extends MainPageObject{
 
-    public static final String
-            FOLDER_BY_NAME_TPL = "xpath://*[@text='{FOLDER_NAME}']",
-            ARTICLE_BY_TITLE_TPL = "xpath://*[@text='{TITLE}']",
-            MY_LIST_ELEMENT = "xpath://*[@content-desc='My lists']";
+    protected static String
+            FOLDER_BY_NAME_TPL,
+            ARTICLE_BY_TITLE_TPL,
+            MY_LIST_ELEMENT,
+            SYNC_YOUR_SAVED_ARTICLES;
 
     private static String getFolderXpathByName(String name_of_folder)
     {
@@ -37,7 +39,7 @@ public class MyListsPageObject extends MainPageObject{
     public void waitForArticleToAppearByTitle(String article_title)
     {
         String article_xpath = getSavedArticleXpathByTitle(article_title);
-        this.waitForElementNotPresent(
+        this.waitForElementPresent(
                 article_xpath,
                 "Can't find saved article by title '" + article_title + "'",
                 15
@@ -62,6 +64,11 @@ public class MyListsPageObject extends MainPageObject{
                 article_xpath,
                 "Can't find saved article"
         );
+
+        if (Platform.getInstance().isiOS())
+        {
+            this.clickElementToTheRightUpperCorner(article_xpath, "Can't find saved article ");
+        }
         this.waitForArticleToDisappearByTitle(article_title);
     }
 
@@ -71,5 +78,14 @@ public class MyListsPageObject extends MainPageObject{
                 MY_LIST_ELEMENT,
                 "Can't find 'My List' button",
                 5);
+    }
+
+    public void closeSyncSavedArticlesPopUp()
+        {
+        this.waitForElementAndClick(
+                SYNC_YOUR_SAVED_ARTICLES,
+                "Can't find 'Close' button for 'Sync your saved articles popup'",
+                10
+        );
     }
 }

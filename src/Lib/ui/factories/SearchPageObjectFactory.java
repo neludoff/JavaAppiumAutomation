@@ -1,4 +1,4 @@
-package Lib.ui.facrories;
+package Lib.ui.factories;
 
 import Lib.Platform;
 import Lib.ui.SearchPageObject;

@@ -3,7 +3,7 @@ package tests;
 import Lib.CoreTestCase;
 import Lib.ui.MainPageObject;
 import Lib.ui.SearchPageObject;
-import Lib.ui.facrories.SearchPageObjectFactory;
+import Lib.ui.factories.SearchPageObjectFactory;
 import org.junit.Test;
 import org.openqa.selenium.WebElement;
 

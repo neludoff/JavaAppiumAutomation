@@ -3,7 +3,8 @@ package tests;
 import Lib.CoreTestCase;
 import Lib.ui.ArticlePageObject;
 import Lib.ui.SearchPageObject;
-import Lib.ui.facrories.SearchPageObjectFactory;
+import Lib.ui.factories.ArticlePageObjectFactory;
+import Lib.ui.factories.SearchPageObjectFactory;
 import org.junit.Test;
 
 public class ChangeAppConditionTests extends CoreTestCase {
@@ -16,7 +17,7 @@ public class ChangeAppConditionTests extends CoreTestCase {
         SearchPageObject.typeSearchLine("Java");
         SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
 
-        ArticlePageObject ArticlePageObject = new ArticlePageObject(driver);
+        ArticlePageObject ArticlePageObject = ArticlePageObjectFactory.get(driver);
         String title_before_rotation = ArticlePageObject.getArticleTitile();
 
         try {

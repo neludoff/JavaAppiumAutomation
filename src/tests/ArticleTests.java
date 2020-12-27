@@ -3,7 +3,8 @@ package tests;
 import Lib.CoreTestCase;
 import Lib.ui.ArticlePageObject;
 import Lib.ui.SearchPageObject;
-import Lib.ui.facrories.SearchPageObjectFactory;
+import Lib.ui.factories.ArticlePageObjectFactory;
+import Lib.ui.factories.SearchPageObjectFactory;
 import org.junit.Test;
 
 public class ArticleTests extends CoreTestCase {
@@ -15,7 +16,7 @@ public class ArticleTests extends CoreTestCase {
         SearchPageObject.typeSearchLine("Java");
         SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
 
-        ArticlePageObject ArticlePageObject = new ArticlePageObject(driver);
+        ArticlePageObject ArticlePageObject = ArticlePageObjectFactory.get(driver);
         String article_title = ArticlePageObject.getArticleTitile();
 
         assertEquals(
@@ -32,7 +33,7 @@ public class ArticleTests extends CoreTestCase {
         SearchPageObject.typeSearchLine("Appium");
         SearchPageObject.clickByArticleWithSubstring("Appium");
 
-        ArticlePageObject ArticlePageObject = new ArticlePageObject(driver);
+        ArticlePageObject ArticlePageObject = ArticlePageObjectFactory.get(driver);
         ArticlePageObject.waitForTitleElement();
         ArticlePageObject.swipeToFooter();
     }
@@ -43,11 +44,11 @@ public class ArticleTests extends CoreTestCase {
     {
         SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
         SearchPageObject.initSearchInput();
-        String search_line = "chief technology officer";
+        String search_line = "Java";
         SearchPageObject.typeSearchLine(search_line);
-        SearchPageObject.clickByArticleWithSubstring("Executive-level position focusing on scientific and technological issues");
+        SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
 
-        ArticlePageObject ArticlePageObject = new ArticlePageObject(driver);
+        ArticlePageObject ArticlePageObject = ArticlePageObjectFactory.get(driver);
         String article_title = ArticlePageObject.getArticleTitile();
 
         assertNotNull("Article title is empty",article_title);
