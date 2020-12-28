@@ -9,6 +9,8 @@ public class iOSMyListsPageObject extends MyListsPageObject
         ARTICLE_BY_TITLE_TPL = "xpath://XCUIElementTypeStaticText[contains(@name,'{TITLE}')]";
         MY_LIST_ELEMENT = "xpath://*[@content-desc='My lists']";
         SYNC_YOUR_SAVED_ARTICLES = "id:Close";
+        IMAGE_ELEMENT = "xpath://XCUIElementTypeImage//..//XCUIElementTypeStaticText";
+        SEARCH_BUTTON ="id:Search";
     }
 
     public iOSMyListsPageObject(AppiumDriver driver){

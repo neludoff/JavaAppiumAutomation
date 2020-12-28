@@ -2,6 +2,9 @@ package Lib.ui;
 
 import io.appium.java_client.AppiumDriver;
 import Lib.Platform;
+import org.openqa.selenium.WebElement;
+
+import java.util.List;
 
 abstract public class MyListsPageObject extends MainPageObject{
 
@@ -9,7 +12,9 @@ abstract public class MyListsPageObject extends MainPageObject{
             FOLDER_BY_NAME_TPL,
             ARTICLE_BY_TITLE_TPL,
             MY_LIST_ELEMENT,
-            SYNC_YOUR_SAVED_ARTICLES;
+            SYNC_YOUR_SAVED_ARTICLES,
+            IMAGE_ELEMENT,
+            SEARCH_BUTTON;
 
     private static String getFolderXpathByName(String name_of_folder)
     {
@@ -86,6 +91,23 @@ abstract public class MyListsPageObject extends MainPageObject{
                 SYNC_YOUR_SAVED_ARTICLES,
                 "Can't find 'Close' button for 'Sync your saved articles popup'",
                 10
+        );
+    }
+
+    public List<WebElement> getElementsIdByImage() {
+        return this.waitForElementsPresent(
+                IMAGE_ELEMENT,
+                "Can't find image element",
+                5
+        );
+    }
+
+    public void clickSearchButton ()
+    {
+        this.waitForElementAndClick(
+                SEARCH_BUTTON,
+                "Can't find search button",
+                5
         );
     }
 }
